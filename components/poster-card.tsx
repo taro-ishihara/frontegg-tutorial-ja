@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 
 export function PosterCard(props: {
   index: string
@@ -21,11 +21,12 @@ export function PosterCard(props: {
   used: boolean
 }) {
   const [used, setUsed] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const router = useRouter()
   useEffect(() => {
     setUsed(props.used)
-  }, [props.used])
+  }, [props])
 
   const clickHandler = async (index: string, owner: string) => {
     setUsed(true)
@@ -33,7 +34,11 @@ export function PosterCard(props: {
       method: 'POST',
       body: JSON.stringify({ owner: owner }),
     })
-    router.refresh()
+    startTransition(() => {
+      // Refresh the current route and fetch new data from the server without
+      // losing client-side browser or React state.
+      router.refresh()
+    })
   }
 
   return (

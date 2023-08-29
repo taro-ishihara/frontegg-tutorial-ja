@@ -13,7 +13,10 @@ export async function POST(
   const { POSTERS } = process.env as unknown as {
     POSTERS: KVNamespace
   }
-  Promise.all([POSTERS.put(owner, index), POSTERS.put(index, owner)])
+  await Promise.all([
+    POSTERS.put(owner, index),
+    await POSTERS.put(index, owner),
+  ])
   revalidatePath('/')
   return NextResponse.json({ message: 'Created' })
 }
