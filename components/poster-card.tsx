@@ -26,7 +26,9 @@ export function PosterCard(prop: {
       <Image src="/image.png" alt="Poster image" width={2557} height={1564} />
       <CardContent></CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="w-full">Stick now</Button>
+        <Button disabled={prop.used} className="w-full">
+          Stick now
+        </Button>
       </CardFooter>
     </Card>
   )
